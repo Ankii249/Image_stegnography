@@ -28,7 +28,7 @@ A web-based Image Steganography application that allows users to **hide (encode)
 
 ```bash
 git clone https://github.com/your-username/image-steganography-django.git
-cd image-steganography-django
+cd stagno_app
 ```
 
 ### 2️⃣ Set up a Virtual Environment
