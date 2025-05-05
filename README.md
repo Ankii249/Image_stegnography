@@ -6,7 +6,7 @@ A web-based Image Steganography application that allows users to **hide (encode)
 
 ## 🚀 Features
 
-* 🔐 Hide text messages in PNG images using steganography.
+* 🔐 Hide text messages in PNG,JPG images using steganography.
 * 🕵️ Extract hidden messages from images.
 * 📂 Upload and download encoded images.
 * 🧰 Simple and clean web UI using HTML/CSS/JS.
