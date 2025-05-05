@@ -1,0 +1,331 @@
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>Image Steganography Project</title>-->
+
+<!--    &lt;!&ndash; Bootstrap CDN for styling &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+
+<!--    &lt;!&ndash; Google Fonts &ndash;&gt;-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: 'Poppins', sans-serif;-->
+<!--            background: url('https://source.unsplash.com/1600x900/?technology,security') no-repeat center center fixed;-->
+<!--            background-size: cover;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .overlay {-->
+<!--            background: rgba(255, 255, 255, 0.9); /* Dark overlay for readability */-->
+<!--            padding: 50px;-->
+<!--            border-radius: 15px;-->
+<!--        }-->
+
+<!--        h1, h2 {-->
+<!--            color: #ffcc00; /* Yellow-Gold headings */-->
+<!--        }-->
+
+<!--        .btn-custom {-->
+<!--            background: #ff6600; /* Orange button */-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            font-size: 18px;-->
+<!--            border-radius: 5px;-->
+<!--            transition: 0.3s;-->
+<!--        }-->
+
+<!--        .btn-custom:hover {-->
+<!--            background: #e65c00; /* Darker shade on hover */-->
+<!--        }-->
+
+<!--        .feature-box {-->
+<!--            background: rgba(255, 255, 255, 0.2);-->
+<!--            padding: 20px;-->
+<!--            border-radius: 10px;-->
+<!--            text-align: center;-->
+<!--            transition: 0.3s;-->
+<!--        }-->
+
+<!--        .feature-box:hover {-->
+<!--            background: rgba(255, 255, 255, 0.4);-->
+<!--        }-->
+
+<!--        .icon {-->
+<!--            width: 60px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    {% include 'navigation.html' %}-->
+
+<!--    <div class="container mt-5">-->
+<!--        <div class="overlay text-center">-->
+<!--            <h1>Welcome to Image Steganography Project</h1>-->
+<!--            <p>Securely hide messages within images using advanced encryption techniques.</p>-->
+<!--            <a href="{% url 'encryption' %}" class="btn btn-custom">Get Started</a>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Features Section &ndash;&gt;-->
+<!--        <div class="row text-center mt-5">-->
+<!--            <div class="col-md-4">-->
+<!--                <div class="feature-box">-->
+<!--                    <img src="https://cdn-icons-png.flaticon.com/512/1001/1001360.png" class="icon">-->
+<!--                    <h2>Steganography</h2>-->
+<!--                    <p>Hide secret text inside images without changing their appearance.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                <div class="feature-box">-->
+<!--                    <img src="https://cdn-icons-png.flaticon.com/512/2103/2103665.png" class="icon">-->
+<!--                    <h2>Encryption</h2>-->
+<!--                    <p>Encrypt images to ensure your data remains secure and unreadable to others.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                <div class="feature-box">-->
+<!--                    <img src="https://cdn-icons-png.flaticon.com/512/1048/1048927.png" class="icon">-->
+<!--                    <h2>Decryption</h2>-->
+<!--                    <p>Retrieve hidden messages from encrypted images securely.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Information Section &ndash;&gt;-->
+<!--        <div class="overlay mt-5">-->
+<!--            <h2>What is Image Steganography?</h2>-->
+<!--            <p>Image Steganography is the technique of hiding secret data within an image without significantly changing its appearance. It ensures secure communication while keeping the hidden message undetectable to outsiders.</p>-->
+
+<!--            <h2>Uses of Image Steganography & Encryption</h2>-->
+<!--            <ul>-->
+<!--                <li>Secure communication by embedding confidential messages inside images.</li>-->
+<!--                <li>Digital watermarking for copyright protection.</li>-->
+<!--                <li>Ensuring privacy in online transactions and sensitive data sharing.</li>-->
+<!--                <li>Cybersecurity applications in preventing unauthorized access.</li>-->
+<!--            </ul>-->
+
+<!--            <h2>Real-World Applications</h2>-->
+<!--            <ul>-->
+<!--                <li><strong>Military & Intelligence:</strong> Used for covert communication and classified information transfer.</li>-->
+<!--                <li><strong>Medical Field:</strong> Protects patient records and medical images from unauthorized access.</li>-->
+<!--                <li><strong>Banking & Finance:</strong> Safeguards financial transactions and important documents.</li>-->
+<!--                <li><strong>Digital Forensics:</strong> Helps investigators hide forensic data within images.</li>-->
+<!--            </ul>-->
+
+<!--            <p class="text-center">-->
+<!--                <a href="{% url 'decryption' %}" class="btn btn-custom">Try Decryption</a>-->
+<!--            </p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Bootstrap Script &ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!doctype html>-->
+<!--{% load static %}-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>Image Steganography</title>-->
+<!--    <style>-->
+<!--        .footer{-->
+<!--        text-align:center;-->
+<!--        position:fixed;-->
+<!--       padding:15px;-->
+<!--        width:100%;-->
+<!--        bottom:0px;-->
+<!--        }-->
+<!--        .image-container{-->
+<!--        position:relative;-->
+<!--        width:50%;-->
+<!--        float:left;-->
+<!--        text-align:center;-->
+<!--        }-->
+
+<!--        .button-link{-->
+<!--        position:absolute;-->
+<!--        top:50%;-->
+<!--        left:50%;-->
+<!--        transform:translate(-50%,-50%)-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--{% include 'navigation.html' %}-->
+
+<!--<div class="image-container mt-5">-->
+<!--    <img src="{% static 'images/Encryption.png' %}" height="300px" width="500px">-->
+<!--    <a href="encryption/" class="btn btn-danger button-link">Encrypt Now</a>-->
+<!--</div>-->
+
+<!--<div class="image-container mt-5">-->
+<!--    <img src="{% static 'images/Decryption.png' %}" height="300px" width="500px">-->
+<!--    <a href="decryption/" class="btn btn-danger button-link">Decrypt Now</a>-->
+<!--</div>-->
+
+<!--<footer class="footer">-->
+<!--    <p>&copy; Created by Ankit And Sidharat</p>-->
+<!--</footer>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Image Steganography</title>
+
+    <style>
+        /* Hacker-style background animation */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: black;
+            color: limegreen;
+            font-family: 'Courier New', monospace;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Centering content */
+        .container {
+            text-align: center;
+            margin-top: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer {
+            text-align: center;
+            position: fixed;
+            padding: 15px;
+            width: 100%;
+            bottom: 0px;
+            background: rgba(0, 0, 0, 0.8);
+            color: limegreen;
+        }
+
+        .image-container {
+            position: relative;
+            width: 50%;
+            float: left;
+            text-align: center;
+        }
+
+        .button-link {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: black;
+            color: limegreen;
+            border: 2px solid limegreen;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .button-link:hover {
+            background: limegreen;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hacker matrix effect -->
+<canvas id="matrix"></canvas>
+
+{% include 'navigation.html' %}
+
+<div class="container">
+    <div class="image-container">
+        <img src="{% static 'images/Encryption.png' %}" height="300px" width="500px">
+        <a href="encryption/" class="btn btn-danger button-link">Encrypt Now</a>
+    </div>
+
+    <div class="image-container">
+        <img src="{% static 'images/Decryption.png' %}" height="300px" width="500px">
+        <a href="decryption/" class="btn btn-danger button-link">Decrypt Now</a>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; Created by Ankit And Sidharat</p>
+</footer>
+
+<!-- JavaScript for Matrix Effect -->
+<script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = "01 10 11 00 01 101 110 001 010 100 110 111 000";
+    const matrix = letters.split("");
+    const fontSize = 18;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
+    }
+
+    function drawMatrix() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#0F0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = matrix[Math.floor(Math.random() * matrix.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+
+            drops[i]++;
+        }
+    }
+
+    setInterval(drawMatrix, 50);
+
+    // Adjust canvas size on window resize
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+

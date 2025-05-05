@@ -1,0 +1,264 @@
+<!--&lt;!&ndash;<!doctype html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;  <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;  <meta name="viewport" content="width=device-width, initial-scale=1">&ndash;&gt;-->
+<!--&lt;!&ndash;  <title>Encryption - Image Stegnography project</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;{% include 'navigation.html' %}&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="container mt-5">&ndash;&gt;-->
+<!--&lt;!&ndash;<h1 class="text-center"> Encrypt Your Image </h1>&ndash;&gt;-->
+<!--&lt;!&ndash;  <form method="post" action="{% url 'encryption' %}" enctype="multipart/form-data">&ndash;&gt;-->
+<!--&lt;!&ndash;    {% csrf_token %}&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;    <label>select an Image </label>&ndash;&gt;-->
+<!--&lt;!&ndash;      <input type="file" name="image" class="form-control-file" required>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;    <label>Enter the Text:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;      <textarea name="text" class="form-control" required rows="3"></textarea>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <button type="submit" class="btn btn-primary">Submit</button>&ndash;&gt;-->
+<!--&lt;!&ndash;  </form>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;{% if message %}&ndash;&gt;-->
+<!--&lt;!&ndash;<p align="center">{{message}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;{% endif %}&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>>&ndash;&gt;-->
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Encryption - Image Steganography</title>
+
+  <style>
+    /* Background Animation - Matrix Effect */
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: limegreen;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    /* Matrix Effect */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+
+    /* Container Styling */
+    .container {
+      text-align: center;
+      margin-top: 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Glitchy Heading */
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px 0 limegreen; }
+      20% { text-shadow: -2px -2px 0 limegreen; }
+      40% { text-shadow: 2px -2px 0 limegreen; }
+      60% { text-shadow: -2px 2px 0 limegreen; }
+      80% { text-shadow: 2px 2px 0 limegreen; }
+      100% { text-shadow: -2px -2px 0 limegreen; }
+    }
+    .glitch-text {
+      display: inline-block;
+      font-size: 28px;
+      animation: glitch 1s infinite;
+    }
+
+    /* Image Encryption Animation */
+    .image-preview {
+      width: 300px;
+      height: 200px;
+      border: 2px solid limegreen;
+      display: block;
+      margin: 20px auto;
+      background-color: black;
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes encrypt-animation {
+      0% { filter: blur(0px) brightness(1) contrast(1); }
+      25% { filter: blur(2px) brightness(1.2) contrast(1.1); }
+      50% { filter: blur(4px) brightness(0.8) contrast(1.3); }
+      75% { filter: pixelate(10px) brightness(1.2) contrast(1); }
+      100% { filter: pixelate(0px) brightness(1) contrast(1); }
+    }
+
+    .encrypting {
+      animation: encrypt-animation 2s linear infinite;
+    }
+
+    /* Input Fields */
+    textarea, input[type="file"] {
+      background: black;
+      color: limegreen;
+      border: 1px solid limegreen;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    textarea:focus, input:focus {
+      outline: none;
+      border: 2px solid limegreen;
+    }
+
+    /* Button Animation */
+    .btn-primary {
+      background: black;
+      border: 2px solid limegreen;
+      color: limegreen;
+      font-weight: bold;
+      padding: 12px 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 18px;
+    }
+
+    .btn-primary:hover {
+      background: limegreen;
+      color: black;
+      transform: scale(1.1);
+      box-shadow: 0 0 10px limegreen;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background Animation -->
+<canvas id="matrixCanvas"></canvas>
+
+{% include 'navigation.html' %}
+
+<div class="container">
+  <h1 class="text-center glitch-text">Encrypt Your Image Securely</h1>
+
+  <form method="post" action="{% url 'encryption' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label>Select an Image</label>
+      <input type="file" name="image" class="form-control-file" required onchange="previewImage(event)">
+    </div>
+
+    <!-- Animated Image Preview -->
+    <div class="image-preview" id="imagePreview"></div>
+
+    <div class="form-group">
+      <label>Enter the Text:</label>
+      <textarea id="inputText" name="text" class="form-control" required rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Encrypt Now</button>
+  </form>
+</div>
+
+{% if message %}
+<p align="center">{{message}}</p>
+{% endif %}
+
+<!-- Matrix Background Animation Script -->
+<script>
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Set canvas dimensions
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Characters used in matrix effect
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+
+  // Array to track rain positions
+  const drops = Array(Math.floor(columns)).fill(0);
+
+  function drawMatrix() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = 'limegreen';
+    ctx.font = fontSize + 'px Courier';
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+
+      drops[i]++;
+    }
+  }
+
+  setInterval(drawMatrix, 50);
+
+  // Binary Encoding Animation on Text Input
+  document.getElementById("inputText").addEventListener("input", function(event) {
+      let text = event.target.value;
+      let encodedText = "";
+      for (let i = 0; i < text.length; i++) {
+          encodedText += Math.random() > 0.5 ? "1" : "0";
+      }
+      event.target.style.borderColor = encodedText.includes("1") ? "limegreen" : "red";
+  });
+
+  // Image Preview and Encryption Animation
+  function previewImage(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+      const preview = document.getElementById('imagePreview');
+      preview.style.backgroundImage = `url(${reader.result})`;
+      preview.classList.add('encrypting');  // Add animation effect
+    }
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

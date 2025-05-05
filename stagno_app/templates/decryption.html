@@ -1,0 +1,239 @@
+<!--&lt;!&ndash;<!doctype html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Decryption - Image Stegnography project</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<body style="background-image: url('https://media.licdn.com/dms/image/v2/D5612AQHzRJ2mZokzPA/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1724314873866?e=1746662400&v=beta&t=RzfX5POGAmKqlkWK6S__0UeNM1jBdkRbGJH99_Pn3w0'); background-size: cover; background-repeat: no-repeat;">&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;{% include 'navigation.html' %}&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="container mt-5">&ndash;&gt;-->
+<!--&lt;!&ndash;<h1 class="text-center"> Decrypt Text from Image </h1>&ndash;&gt;-->
+<!--&lt;!&ndash;  <form method="post" action="{% url 'decryption' %}" enctype="multipart/form-data">&ndash;&gt;-->
+<!--&lt;!&ndash;    {% csrf_token %}&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;    <label>Encrypted  Image </label>&ndash;&gt;-->
+<!--&lt;!&ndash;      <input type="file" name="image" class="form-control-file" required>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <button type="submit" class="btn btn-primary">Decrypt</button>&ndash;&gt;-->
+<!--&lt;!&ndash;  </form>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;{% if text %}&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="alert alert-success mt-3">&ndash;&gt;-->
+<!--&lt;!&ndash;    <h4>Decrypted Text</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;    <p>{{text}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;{% endif %}&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Decryption - Image Steganography</title>
+
+    <style>
+        /* Background Animation - Decryption Theme */
+        body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            color: cyan;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+
+        /* Digital Wave Animation */
+        @keyframes wave {
+            0% { background-position: 0px 0px; }
+            50% { background-position: 100px 100px; }
+            100% { background-position: 0px 0px; }
+        }
+
+        .decrypt-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.2) 10%, rgba(0, 0, 0, 1) 80%);
+            background-size: 300% 300%;
+            animation: wave 5s infinite alternate ease-in-out;
+            z-index: -1;
+        }
+
+        /* Container Styling */
+        .container {
+            text-align: center;
+            margin-top: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glitch Effect */
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px 0 cyan; }
+            20% { text-shadow: -2px -2px 0 cyan; }
+            40% { text-shadow: 2px -2px 0 cyan; }
+            60% { text-shadow: -2px 2px 0 cyan; }
+            80% { text-shadow: 2px 2px 0 cyan; }
+            100% { text-shadow: -2px -2px 0 cyan; }
+        }
+        .glitch-text {
+            display: inline-block;
+            font-size: 28px;
+            animation: glitch 1s infinite;
+        }
+
+        /* Image Decryption Effect */
+        .image-preview {
+            width: 300px;
+            height: 200px;
+            border: 2px solid cyan;
+            display: block;
+            margin: 20px auto;
+            background-color: black;
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes decrypt-animation {
+            0% { filter: blur(8px) brightness(0.5) contrast(2); }
+            50% { filter: blur(4px) brightness(1) contrast(1.5); }
+            100% { filter: blur(0px) brightness(1) contrast(1); }
+        }
+
+        .decrypting {
+            animation: decrypt-animation 2.5s ease-in-out forwards;
+        }
+
+        /* Input Fields */
+        input[type="file"] {
+            background: black;
+            color: cyan;
+            border: 1px solid cyan;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid cyan;
+        }
+
+        /* Button Animation */
+        .btn-primary {
+            background: black;
+            border: 2px solid cyan;
+            color: cyan;
+            font-weight: bold;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 18px;
+        }
+
+        .btn-primary:hover {
+            background: cyan;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px cyan;
+        }
+
+        /* Decrypted Text Box */
+        .alert {
+            border: 1px solid cyan;
+            padding: 15px;
+            margin: 20px auto;
+            width: 50%;
+            background: rgba(0, 255, 255, 0.1);
+            color: cyan;
+            font-weight: bold;
+        }
+
+        /* Decryption Animation for Text */
+        @keyframes text-reveal {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .decrypted-text {
+            animation: text-reveal 1.5s ease-in-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background Animation -->
+<div class="decrypt-background"></div>
+
+{% include 'navigation.html' %}
+
+<div class="container">
+    <h1 class="text-center glitch-text">Decrypt Text from Image</h1>
+
+    <form method="post" action="{% url 'decryption' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Encrypted Image</label>
+            <input type="file" name="image" class="form-control-file" required onchange="previewImage(event)">
+        </div>
+
+        <!-- Animated Image Preview -->
+        <div class="image-preview" id="imagePreview"></div>
+
+        <button type="submit" class="btn btn-primary">Decrypt</button>
+    </form>
+</div>
+
+{% if text %}
+<div class="alert decrypted-text">
+    <h4>Decrypted Text</h4>
+    <p>{{ text }}</p>
+</div>
+{% endif %}
+
+<!-- Decryption Animation Script -->
+<script>
+    // Image Preview and Decryption Animation
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            const preview = document.getElementById('imagePreview');
+            preview.style.backgroundImage = `url(${reader.result})`;
+            preview.classList.add('decrypting');  // Add animation effect
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
